@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="layout_padding">20dp</dimen>
+    <dimen name="custom_textview_textsize">30dp</dimen>
+    <dimen name="layout_margin">8dp</dimen>
+    <dimen name="layout_height">0dp</dimen>
+    <dimen name="text_view_layout_width">100dp</dimen>
+    <dimen name="text_view_layout_height">100dp</dimen>
+    <dimen name="text_view_marginTop">50dp</dimen>
+    <dimen name="text_view_marginLeftRight">15dp</dimen>
+</resources>
