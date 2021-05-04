@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
@@ -25,14 +26,17 @@ public class MainActivity extends AppCompatActivity {
     private TextView infoTextView;
     private ImageView image1, image2, image3;
     private Button button;
-    private static final int[] drawables = {R.drawable.slot1, R.drawable.slot2, R.drawable.slot3,
-            R.drawable.slot4, R.drawable.slot5, R.drawable.slot6};
 
     public static final ArrayList<Integer> arrDrawables = new ArrayList<>();
 
     private int one;
     private int two;
     private int three;
+    private int countScore;
+
+    private CountDownTimer timer;
+    private final long time = 3000;
+
     private AdView mAdView;
 
     @Override
@@ -50,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-
         image1 = findViewById(R.id.image1);
         image2 = findViewById(R.id.image2);
         image3 = findViewById(R.id.image3);
@@ -67,32 +70,12 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isRunning) {
+                infoTextView.setText("");
+                isRunning = true;
+                button.setVisibility(View.INVISIBLE);
+                downloadCountDounTimer(time);
+                timer.start();
 
-                    isRunning = false;
-
-                    if (one == two && one == three) {
-                        infoTextView.setText(R.string.msg_bingo);
-                        infoTextView.setTextColor(infoTextView.getResources().getColor(R.color.red));
-                    } else if (one == two
-                            || two == three
-                            || one == three) {
-                        infoTextView.setText(R.string.msg_hot_hot);
-                        infoTextView.setTextColor(infoTextView.getResources().getColor(R.color.orange));
-                    } else {
-                        infoTextView.setText(R.string.msg_you_lose);
-                        infoTextView.setTextColor(infoTextView.getResources().getColor(R.color.blue));
-                    }
-
-                    button.setText(R.string.btn_start);
-                    button.setBackgroundColor(button.getResources().getColor(R.color.blue));
-
-                } else {
-                    infoTextView.setText("");
-                    isRunning = true;
-                    button.setText(R.string.btn_stop);
-                    button.setBackgroundColor(button.getResources().getColor(R.color.red));
-                }
             }
         });
 
@@ -105,26 +88,64 @@ public class MainActivity extends AppCompatActivity {
         final Handler handler = new Handler();
 
         handler.post(new Runnable() {
+
             @Override
             public void run() {
 
                 if (isRunning) {
                     setImg();
                 }
-                handler.postDelayed(this, 1000);
+
+                handler.postDelayed(this, 200);
             }
         });
     }
 
+    private void downloadCountDounTimer(long millisec) {
+
+        timer = new CountDownTimer(millisec, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                isRunning = false;
+                showResult();
+            }
+        };
+    }
+
     private void setImg() {
-        int min = 0;
         int max = 5;
-        one = (int) (Math.random() * (max - min + 1) + min);
-        two = (int) (Math.random() * (max - min + 1) + min);
-        three = (int) (Math.random() * (max - min + 1) + min);
+        one = (int) (Math.random() * (max + 1));
+        two = (int) (Math.random() * (max + 1));
+        three = (int) (Math.random() * (max + 1));
 
         image1.setImageResource(arrDrawables.get(one));
         image2.setImageResource(arrDrawables.get(two));
         image3.setImageResource(arrDrawables.get(three));
+    }
+
+    @SuppressLint("StringFormatMatches")
+    private void showResult() {
+        isRunning = false;
+
+        int maxScore = 10;
+        if (one == two && one == three) {
+            countScore += maxScore;
+            infoTextView.setText(String.format(getString(R.string.msg), maxScore, countScore));
+        } else if (one == two
+                || two == three
+                || one == three) {
+            int minScore = 5;
+            countScore += minScore;
+            infoTextView.setText(String.format(getString(R.string.msg), minScore, countScore));
+        } else {
+            infoTextView.setText(R.string.msg_you_lose);
+        }
+
+        button.setText(R.string.btn_text);
+        button.setVisibility(View.VISIBLE);
     }
 }

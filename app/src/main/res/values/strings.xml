@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">MySlotMachine</string>
-    <string name="msg_bingo">BINGOOO!!!</string>
-    <string name="msg_hot_hot">Hot! Hot!</string>
-    <string name="msg_you_lose">You lose</string>
-    <string name="btn_start">Start</string>
-    <string name="btn_stop">Stop</string>
-    <string name="msg">Сообщение</string>
-    <string name="btn_text">Start</string>
+    <string name="msg">Выигрыш: %s!\nОбщий счет: %s!</string>
+    <string name="btn_text">Старт</string>
+    <string name="msg_you_lose">Проигрыш!</string>
+    <string name="todo">TODO</string>
 </resources>
